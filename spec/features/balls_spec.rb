@@ -115,9 +115,19 @@ feature "thenth frame" do
   end
 
   context "when spare" do
-    pending "the player may throw one more ball" do
+    it "the player may throw one more ball" do
+      fill_in "ball_pins", with: "7"
+      click_button "See score"
 
+      fill_in "ball_pins", with: "3"
+      click_button "See score"
+
+      fill_in "ball_pins", with: "2"
+      click_button "See score"
+      expect(Frame.last.balls.size).to be 3
+      expect(Frame.count).to be 10
+      expect(Frame.number).to be 11
+      expect(page).to have_content "Game Over"
     end
   end
-
 end

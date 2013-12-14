@@ -1,6 +1,8 @@
 class Ball < ActiveRecord::Base
   belongs_to :frame
   validates_presence_of :pins
+  validates_numericality_of :pins, greater_than_or_equal_to: 0, less_than_or_equal_to: 10
+
   before_create :join_frame
   before_create :set_score
 

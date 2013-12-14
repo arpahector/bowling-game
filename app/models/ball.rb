@@ -23,8 +23,10 @@ class Ball < ActiveRecord::Base
 private
 
   def join_frame
-    if Ball.count == 0 || (Ball.last.first_one? && Frame.number < 10)
+    if Ball.count == 0 || (Ball.last.strike? || Ball.last.second_one?)
       self.frame_id = Frame.create.id
+    else
+      self.frame_id = Frame.last.id
     end
   end
 
@@ -34,7 +36,7 @@ private
     else
       self.score = Ball.last.score + self.pins
       self.score += self.pins if Ball.last.strike? || Ball.last.spare?
-      self.score += self.pins if Ball.second_to_last && Ball.second_to_last.strike?
+      self.score += self.pins if Ball.second_to_last.try(:strike?)
     end
   end
 

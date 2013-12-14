@@ -78,3 +78,46 @@ feature "second ball of a frame" do
     end
   end
 end
+
+feature "thenth frame" do
+  background do
+    visit root_path
+    18.times do
+      fill_in "ball_pins", with: "3"
+      click_button "See score"
+    end
+  end
+
+  context "when no strike or spare" do
+    it "the game is over" do
+      fill_in "ball_pins", with: "3"
+      click_button "See score"
+
+      fill_in "ball_pins", with: "3"
+      click_button "See score"
+
+      expect(page).to have_content "Game Over"
+    end
+  end
+
+  context "when strike" do
+    it "the player may throw two more balls" do
+      fill_in "ball_pins", with: "10"
+      click_button "See score"
+
+      fill_in "ball_pins", with: "3"
+      click_button "See score"
+
+      fill_in "ball_pins", with: "3"
+      click_button "See score"
+      expect(page).to have_content "Game Over"
+    end
+  end
+
+  context "when spare" do
+    pending "the player may throw one more ball" do
+
+    end
+  end
+
+end

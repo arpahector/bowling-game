@@ -23,7 +23,7 @@ class Ball < ActiveRecord::Base
 private
 
   def join_frame
-    if Ball.count == 0 || (Ball.last.strike? || Ball.last.second_one?)
+    if Ball.count == 0 || (Frame.count < 10 && (Ball.last.strike? || Ball.last.second_one?))
       self.frame_id = Frame.create.id
     else
       self.frame_id = Frame.last.id

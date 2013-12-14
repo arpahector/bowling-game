@@ -2,11 +2,14 @@ Score:
 = @score
 %br
 
-Frame:
-= @frame_number
-%br
+- if @frame_number < 11
+  Frame:
+  = @frame_number
+  %br
 
-= form_for :ball, url: {action: "create"} do |f|
-  Pins thrown by the next ball:
-  = f.text_field :pins
-  = f.submit "See score"
+  = form_for :ball, url: {action: "create"} do |f|
+    Pins thrown by the next ball:
+    = f.text_field :pins
+    = f.submit "See score"
+- else
+  Game Over

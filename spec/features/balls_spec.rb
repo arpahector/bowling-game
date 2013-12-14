@@ -17,7 +17,7 @@ feature "first ball of a frame" do
       expect(page).to have_content "Score: 7"
     end
 
-    it "score should take into account the next two scores" do
+    it "score should take into account the next two balls" do
       visit root_path
       fill_in "ball_pins", with: "10"
       click_button "See score"
@@ -62,7 +62,7 @@ feature "second ball of a frame" do
   end
 
   context "when spare" do
-    it "score should only take into account the next score" do
+    it "score should only take into account the next ball" do
       visit root_path
       fill_in "ball_pins", with: "10"
       click_button "See score"

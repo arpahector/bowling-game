@@ -9,8 +9,4 @@ describe Ball do
     ball = Ball.create(pins: 7)
     expect(ball.frame).not_to be nil
   end
-
-  describe "after being thrown" do
-    pending "receives a score"
-  end
 end

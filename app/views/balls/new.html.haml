@@ -1,0 +1,11 @@
+Score:
+= @score
+
+Frame:
+= @frame_number
+%br
+
+= form_for :ball, url: {action: "create"} do |f|
+  Pins thrown by the next ball:
+  = f.text_field :pins
+  = f.submit "See score"

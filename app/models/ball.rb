@@ -15,11 +15,11 @@ class Ball < ActiveRecord::Base
   end
 
   def strike?
-    frame.strike?
+    @strike ||= first_one? && pins == 10
   end
 
   def spare?
-    frame.spare?
+    @spare ||= (second_one? && pins + frame.balls.first.pins == 10) || (Frame.count == 10 && frame.balls.first.strike? && pins == 10)
   end
 
 private

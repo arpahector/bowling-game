@@ -2,11 +2,11 @@ class Frame < ActiveRecord::Base
   has_many :balls
 
   def strike?
-    balls.first.pins == 10
+    @strike ||= balls.first.try(:strike?)
   end
 
   def spare?
-    balls.size == 2 && [balls.first, balls.second].map(&:pins).sum == 10
+    @spare ||= balls.second.try(:spare?)
   end
 
   def self.number

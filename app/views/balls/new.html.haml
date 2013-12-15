@@ -8,6 +8,10 @@ Score:
   %br
 
   = form_for :ball, url: {action: "create"} do |f|
+    - @ball.errors.full_messages.each do |msg|
+      = msg
+      %br
+
     Pins thrown by the next ball:
     = f.text_field :pins
     = f.submit "See score"

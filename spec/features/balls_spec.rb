@@ -111,8 +111,6 @@ feature "thenth frame" do
       fill_in "ball_pins", with: "3"
       click_button "See score"
       expect(page).to have_content "Game Over"
-      expect(Ball.second_to_last.strike?).to be false
-      expect(Ball.last.strike?).to be false
       expect(page).to have_content "Score: " + (18*3 + 10 + 6*2).to_s
     end
 
@@ -140,9 +138,6 @@ feature "thenth frame" do
 
       fill_in "ball_pins", with: "2"
       click_button "See score"
-      expect(Frame.last.balls.size).to be 3
-      expect(Frame.count).to be 10
-      expect(Frame.number).to be 11
       expect(page).to have_content "Game Over"
     end
   end

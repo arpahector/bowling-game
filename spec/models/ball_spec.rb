@@ -32,8 +32,6 @@ describe Ball do
     it "after one strike + 7 pins thrown only remain 3 pins" do
       18.times{ Ball.create(pins: 3) }
       expect(Ball.create(pins: 10)).to be_valid
-      expect(Ball.last.first_one.strike?).to be true
-      expect(Ball.last.frame.balls.size).to be 1
       expect(Ball.create(pins: 7)).to be_valid
       expect(Ball.create(pins: 4)).to have(1).errors_on(:pins)
     end

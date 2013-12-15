@@ -1,13 +1,21 @@
 class BallsController < ApplicationController
+  after_filter :data, only: :new
+
   def new
-    @ball ||= Ball.new
-    @frame_number = Frame.number
-    @score = Ball.last.try(:score) || 0
-  end
+    @ball = Ball.new
+   end
 
   def create
     @ball = Ball.create(params[:ball].permit(:pins))
-    new
+    data
     render action: "new"
+  end
+
+private
+
+  def data
+    @frame_number = Frame.number
+    @game_over = Frame.game_over?
+    @score = Ball.last.try(:score) || 0
   end
 end

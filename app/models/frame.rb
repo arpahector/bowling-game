@@ -9,6 +9,10 @@ class Frame < ActiveRecord::Base
     @spare ||= balls.second.try(:spare?)
   end
 
+  def self.game_over?
+    number == 11
+  end
+
   def self.number
     if count == 0 || count == 10 || last.balls.size == 2 || last.try(:strike?)
       if count < 10

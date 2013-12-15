@@ -2,7 +2,9 @@ Score:
 = @score
 %br
 
-- if @frame_number < 11
+- if @game_over
+  Game Over
+- else
   Frame:
   = @frame_number
   %br
@@ -15,5 +17,3 @@ Score:
     Pins thrown by the next ball:
     = f.text_field :pins
     = f.submit "See score"
-- else
-  Game Over

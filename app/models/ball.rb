@@ -2,24 +2,33 @@ class Ball < ActiveRecord::Base
   belongs_to :frame
   validates_presence_of :pins
   validates_numericality_of :pins, greater_than_or_equal_to: 0, less_than_or_equal_to: 10
+  validate :pins_less_or_equal_to_remaining_pins
 
-  before_create :join_frame
+  before_validation :join_frame
   before_create :set_score
-
-  def first_one?
-    frame.balls.first == self
-  end
-
-  def second_one?
-    frame.balls.second == self
-  end
 
   def strike?
     @strike ||= first_one? && pins == 10
   end
 
   def spare?
-    @spare ||= (second_one? && pins + frame.balls.first.pins == 10) || (Frame.count == 10 && frame.balls.first.strike? && pins == 10)
+    @spare ||= (second_one? && pins + first_one.pins == 10) || (Frame.count == 10 && first_one.strike? && pins == 10)
+  end
+
+  def first_one?
+    first_one == self
+  end
+
+  def second_one?
+    second_one == self
+  end
+
+  def first_one
+    frame.balls.first
+  end
+
+  def second_one
+    frame.balls.second
   end
 
 private
@@ -44,5 +53,11 @@ private
 
   def self.second_to_last
     self.order("id DESC").offset(1).first
+  end
+
+  def pins_less_or_equal_to_remaining_pins
+    if frame.balls.size == 1 && !first_one.strike? && (first_one.pins + pins > 10)
+      errors.add(:pins, "You can't throw more pins than the remaining ones")
+    end
   end
 end

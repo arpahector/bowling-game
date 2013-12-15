@@ -8,11 +8,11 @@ class Ball < ActiveRecord::Base
   before_create :set_score
 
   def strike?
-    @strike ||= first_one? && pins == 10
+    @strike ||= pins == 10 && (first_one? || (second_one? && first_one.strike?) || third_one? && first_one.strike? && second_one.strike?)
   end
 
   def spare?
-    @spare ||= (second_one? && pins + first_one.pins == 10) || (Frame.count == 10 && first_one.strike? && pins == 10)
+    @spare ||= (second_one? && pins + first_one.pins == 10) || (third_one? && first_one.strike? && !second_one.strike? && second_one.pins + pins == 10)
   end
 
   def first_one?
@@ -23,12 +23,20 @@ class Ball < ActiveRecord::Base
     second_one == self
   end
 
+  def third_one?
+    third_one == self
+  end
+
   def first_one
     frame.balls.first
   end
 
   def second_one
     frame.balls.second
+  end
+
+  def third_one
+    frame.balls.third
   end
 
 private
@@ -56,7 +64,7 @@ private
   end
 
   def pins_less_or_equal_to_remaining_pins
-    if frame.balls.size == 1 && !first_one.strike? && (first_one.pins + pins > 10)
+    if frame.balls.size == 1 && !first_one.strike? && (first_one.pins + pins > 10) || (frame.balls.size == 3 && !second_one.strike? && (second_one.pins + pins > 10))
       errors.add(:pins, "You can't throw more pins than the remaining ones")
     end
   end

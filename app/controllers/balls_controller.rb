@@ -3,7 +3,7 @@ class BallsController < ApplicationController
 
   def new
     @ball = Ball.new
-   end
+  end
 
   def create
     @ball = Ball.create(params[:ball].permit(:pins))
@@ -14,8 +14,8 @@ class BallsController < ApplicationController
 private
 
   def data
+    @score = Ball.last.try(:score) || 0
     @frame_number = Frame.number
     @game_over = Frame.game_over?
-    @score = Ball.last.try(:score) || 0
   end
 end
